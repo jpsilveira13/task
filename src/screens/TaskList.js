@@ -16,6 +16,7 @@ export default class TaskList extends Component{
   state = {
 
     showDoneTask: true,
+    showAddTask:false,
     visibleTask: [],
     tasks: [{
       id: Math.random(),
@@ -63,7 +64,10 @@ export default class TaskList extends Component{
     const today = moment().locale('pt-br').format('ddd, D [de] MMMM')
     return (
       <View style={styles.container}>
-        <AddTask />
+        <AddTask 
+        isVisible={this.state.showAddTask}
+        onCancel={() => this.setState({ showAddTask: false})} />
+
         <ImageBackground source={todayImage}
         style={styles.background}>
           <View style={styles.iconbar}>
@@ -83,7 +87,13 @@ export default class TaskList extends Component{
           renderItem={({item}) => <Task {...item} toggleTask={this.toggleTask} />}/>
            
         </View>
-     
+        <View>
+          <TouchableOpacity style={styles.addButton}
+          activeOpacity={0.7}
+          onPress={() => this.setState({showAddTask: true})}>
+            <Icon name="plus" size={20} color={commonStyle.colors.secundary} />
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -121,5 +131,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     justifyContent: "flex-end",
     marginTop: 40
+  },
+  addButton:{
+    position:"absolute",
+    right:30,
+    bottom:30,
+    width:50,
+    height:50,
+    borderRadius: 25,
+    backgroundColor:commonStyle.colors.today,
+    justifyContent: 'center',
+    alignItems:'center'
   }
 })
